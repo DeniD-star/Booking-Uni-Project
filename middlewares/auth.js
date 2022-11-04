@@ -92,15 +92,20 @@ return jwt.sign({
 function parseToken(req, res){
     const token = req.cookies[COOKIE_NAME];
 
-    try {
-        const userData = jwt.verify(token, TOKEN_SECRET);
-        req.user = userData;
-        return true;
-    } catch (err) {
-        res.clearCookie(COOKIE_NAME);
-        res.redirect('/auth/login');
-
-        return false;
+    if(token){
+        
+        try {
+            const userData = jwt.verify(token, TOKEN_SECRET);
+            req.user = userData;
+           
+        } catch (err) {
+            res.clearCookie(COOKIE_NAME);
+            res.redirect('/auth/login');
+    
+            return false;
+        }
     }
+
+   return true;
    
 }

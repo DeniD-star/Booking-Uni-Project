@@ -1,22 +1,22 @@
 # Structure for every NPM project
 
-[ ] Create folder structure.
-[ ] Initialize NPM project.
-[ ] Install libraries.
-[ ] Include resources (Html & CSS, etc.)
-[ ] Arrange templates (without editing)
-[ ] Create initialization files
-[ ] - index- create and start (Express) application
-[ ] - config files- database connect (Mongoose), Express middle-wares(Body-parser, static ),
+[x] Create folder structure.
+[x] Initialize NPM project.
+[x] Install libraries.
+[x] Include resources (Html & CSS, etc.)
+[x] Arrange templates (without editing)
+[x] Create initialization files
+[x] - index- create and start (Express) application
+[x] - config files- database connect (Mongoose), Express middle-wares(Body-parser, static ),
  external middle-wares(cookie-parser, bcrypt, jsonwebtoken)
-[ ] Create generic User model
-[ ] Create user service and auth middle-ware
+[x] Create generic User model
+[x] Create user service and auth middle-ware
 -user service has to create user, find user by username, find user by email if project requires that
 -in service we accept already valid data, here we don't have to do any validation
 -the role of this service will be only to create instance of the model and save it
-[ ] Create mock routes for register, login and logout
-[ ] Create route guards
-[ ] Create generic storage middleware
+[x] Create mock routes for register, login and logout
+[x] Create route guards
+[x] Create generic storage middleware
 [ ] 
 
 
