@@ -9,55 +9,62 @@ const {TOKEN_SECRET, COOKIE_NAME} = require('../config/index')
 //res.cookie -v res
 //req.cookies - v req
 
-function init(){
-    return function(req, res, next){
+module.exports =()=> (req, res, next)=>{
         //attach functions to context
-
-        req.auth= {
-            async register(username, password){
-                    const token = await register(username, password);
+        if(parseToken(req, res)){
+            req.auth = {
+                async register(email, username, password){
+                        const token = await register(email, username, password);
+                        res.cookie(COOKIE_NAME, token);
+                },
+                 async login(username, password){
+                    const token = await login(username, password);
                     res.cookie(COOKIE_NAME, token);
-            },
-             async login(username, password){
-                const token = await login(username, password);
-                res.cookie(COOKIE_NAME, token);
-            },
-            logout(){
-                res.clearCookie(COOKIE_NAME);
+                },
+                logout(){
+                    res.clearCookie(COOKIE_NAME);
+                }
             }
+            //now we have to make a function that will parse the cookie in the req, and is gonna be called before we call next(). That function
+            //will verify token and will add the data into the request, will decor it , 
+            //if we cant verify token, we have the redirect to login page, is mean that token is not ok, and so
+            //if we redirect to login page, ew don't have to arrive to next() function
+            next()
+        
         }
-        //now we have to make a function that will parse the cookie in the req, and is gonna be called before we call next(). That function
-        //will verify token and will add the data into the request, will decor it , 
-        //if we cant verify token, we have the redirect to login page, is mean that token is not ok, and so
-        //if we redirect to login page, ew don't have to arrive to next() function
-        next()
-    }
+
+       
 }
 
-async function register(username, password){
-    const existing = await userService.getUserByUsername(username);
+async function register(email, username, password){
+    const existingUsername = await userService.getUserByUsername(username);
+    const existingEmail = await userService.getUserByUsername(email);
 
-    if(existing){
+    if(existingUsername){
         throw new Error ('Username is taken!')
+    }
+    if(existingEmail){
+        throw new Error ('Email is taken!')
     }
 
     //if is not existing we register him, 
     //1. we hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     //i sega go suzdavame
-    const user = await userService.createUser(username, hashedPassword);
+    const user = await userService.createUser(email, username, hashedPassword);
 
     return generateToken(user);
 }
-async function register(username, password){
+async function login( username, password){
     const user = await userService.getUserByUsername(username);
+   
  //if we don't find such user in database
     if(!user){
         throw new Error ('No such user!')//taq gre6ka e za nas, tq 6te bude catchnata ot controllera i ve4e controllera 6te re6i kakva gre6ka da vurne na potrebitelq
     }
 
    //if is there, then we compare passwords
-    const hasMatch = await bcrypt.compare(password, user.hashedPassword);
+    const hasMatch = await bcrypt.compare( password, user.hashedPassword);
     
 //if is there is no match
     if(!hasMatch){
@@ -76,6 +83,24 @@ async function register(username, password){
 function generateToken(userData){
 return jwt.sign({
     _id: userData._id,
-    username: userData.username
+    username: userData.username,
+    email: userData.email
 }, TOKEN_SECRET)
+}
+
+
+function parseToken(req, res){
+    const token = req.cookies[COOKIE_NAME];
+
+    try {
+        const userData = jwt.verify(token, TOKEN_SECRET);
+        req.user = userData;
+        return true;
+    } catch (err) {
+        res.clearCookie(COOKIE_NAME);
+        res.redirect('/auth/login');
+
+        return false;
+    }
+   
 }

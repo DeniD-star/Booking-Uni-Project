@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
-<body>
+<body> --}}
 
-    <div id="container">
+    {{!-- <div id="container">
         <div>
             <div class="notification loadingBox">
                 Loading …
@@ -21,6 +21,7 @@
                 <span>Error</span>
             </div>
         </div>
+
         <nav>
             <div class="left-container">
                 <ul>
@@ -29,26 +30,22 @@
                     <li><a href="">Register</a></li>
                 </ul>
             </div>
-        </nav>
+        </nav> --}}
 
-        <section id="viewRegister">
-            <h2>Create your account:</h2>
-            <form id="formRegister">
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="Email">
+        <section id="viewLogin">
+            <h2>Login:</h2>
+            <form id="formLogin" action="/auth/login" method="POST">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your Username">
+                <input type="text" id="username" name="username" placeholder="Enter your Username" value={{userData.username}}>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Password">
-                <label for="rePassword">Repeat Password:</label>
-                <input type="password" id="rePassword" name="rePassword" placeholder="Repeat Password">
-                <input type="submit" class="register" value="Register">
+                <input type="password" id="password" name="password" placeholder="Enter your Password">
+                <input type="submit" class="login" value="Login">
             </form>
         </section>
 
-        <footer>@SoftUni - JS Back-end - BookingUni 2020</footer>
+        {{!-- <footer>@SoftUni - JS Back-end - BookingUni 2020</footer>
     </div>
 
 </body>
 
-</html>
+</html> --}}

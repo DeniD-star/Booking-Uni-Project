@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,7 +21,6 @@
                 <span>Error</span>
             </div>
         </div>
-
         <nav>
             <div class="left-container">
                 <ul>
@@ -30,22 +29,26 @@
                     <li><a href="">Register</a></li>
                 </ul>
             </div>
-        </nav>
+        </nav> --}}
 
-        <section id="viewLogin">
-            <h2>Login:</h2>
-            <form id="formLogin">
+        <section id="viewRegister">
+            <h2>Create your account:</h2>
+            <form id="formRegister" action="/auth/register" method="POST">
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Email" value={{userData.email}}>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your Username">
+                <input type="text" id="username" name="username" placeholder="Enter your Username"  value={{userData.username}}>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your Password">
-                <input type="submit" class="login" value="Login">
+                <input type="password" id="password" name="password" placeholder="Password">
+                <label for="rePassword">Repeat Password:</label>
+                <input type="password" id="rePassword" name="rePass" placeholder="Repeat Password">
+                <input type="submit" class="register" value="Register">
             </form>
         </section>
 
-        <footer>@SoftUni - JS Back-end - BookingUni 2020</footer>
+        {{!-- <footer>@SoftUni - JS Back-end - BookingUni 2020</footer>
     </div>
 
 </body>
 
-</html>
+</html> --}}
