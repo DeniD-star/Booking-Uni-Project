@@ -1,3 +1,9 @@
+const hotel = require('../services/hotelService')
+
 module.exports = ()=> (req, res, next)=>{
-    req.storage = {};
+    req.storage = {
+        ...hotel
+    };
+
+    next()
 }

@@ -22,9 +22,9 @@
 
 # Requirements for Booking-Uni Project
 
-[ ] Adapt User model and user service, auth middle-wares to project requirements
-[ ] Implement register and login page actions, register, login, logout actions
-[ ] Update config, index.js-database name project
+[x] Adapt User model and user service, auth middle-wares to project requirements
+[x] Implement register and login page actions, register, login, logout actions
+[x] Update config, index.js-database name project
 [ ] Create models for project-specific data
 [ ] Create data services and middle-wares for project-specific data
 [ ] Implements page action for project-specific functionality(validations, errors for the user)
