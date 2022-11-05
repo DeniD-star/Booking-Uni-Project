@@ -97,6 +97,7 @@ function parseToken(req, res){
         try {
             const userData = jwt.verify(token, TOKEN_SECRET);
             req.user = userData;
+            res.locals.user = userData;//vsi4ko, koeto slojim v tova specialno svoistvo na req,locals, 6te bude vidimo v layouts
            
         } catch (err) {
             res.clearCookie(COOKIE_NAME);

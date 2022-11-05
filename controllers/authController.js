@@ -24,7 +24,8 @@ router.post('/register',
         try {
 
             if (errors.length > 0) {
-                throw new Error('Validation error!')
+                const message = errors.map(e=> e.msg).join('\n');
+                throw new Error(message)
             }
             console.log(errors);
             await req.auth.register(req.body.email, req.body.username, req.body.password);
@@ -33,7 +34,7 @@ router.post('/register',
         } catch (err) {
 
             const ctx = {
-                errors,
+                errors: err.message.split('\n'),
                 userData: {
                     username: req.body.username,
                     email: req.body.email
