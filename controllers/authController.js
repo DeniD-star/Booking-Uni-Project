@@ -9,8 +9,9 @@ router.get('/register', isGuest(), (req, res) => {
 
 router.post('/register',
     body('username', 'Username is required!'),
-    body('email', 'Email is required!').isEmail().withMessage('Invalid email!').isAlphanumeric().withMessage('Email must contain only english letters and digits!'),
-    body('password', 'Password is required!').isLength({ min: 5 }).withMessage('Password must be at least 3 characters long!')
+    body('email', 'Email is required!').isEmail().withMessage('Invalid email!'),
+    //.isAlphanumeric().withMessage('Email must contain only english letters and digits!')
+    body('password', 'Password is required!').isLength({ min: 5 }).withMessage('Password must be at least 5 characters long!')
     .bail().isAlphanumeric().withMessage('Password must contain only english letters and digits!'),
     body('rePass', 'Repeat password, please!').custom((value, { req }) => {
         if (value !== req.body.password) {
