@@ -21,13 +21,13 @@ router.post('/create', isUser(), async (req, res) => {
         await req.storage.createHotel(hotelData);
         res.redirect('/');
     } catch (err) {
-        let errors; 
-        if(err.errors){
+        let errors;
+        if (err.errors) {
             errors = Object.values(err.errors).map(e => e.properties.message);
-        }else{
+        } else {
             errors = [err.message]
         }
-        
+
         const ctx = {
             errors,
             hotelData: {
@@ -43,62 +43,62 @@ router.post('/create', isUser(), async (req, res) => {
 })
 
 
-router.get('/details/:id', async(req, res)=>{
+router.get('/details/:id', async (req, res) => {
     try {
 
         const hotel = await req.storage.getHotelById(req.params.id);
         hotel.hasUser = Boolean(req.user);
         hotel.isOwner = req.user && req.user._id == hotel.owner;
-        hotel.isBooked = req.user && hotel.bookedBy.find(h=> h._id == req.user._id)
+        hotel.isBooked = req.user && hotel.bookedBy.find(x => x == req.user._id)
 
-        res.render('hotel/details', {hotel})
-        
+        res.render('hotel/details', { hotel })
+
     } catch (err) {
         console.log(err.message);
         res.redirect('/404');
     }
 })
 
-router.get('/edit/:id', isUser(), async(req, res)=>{
-    
+router.get('/edit/:id', isUser(), async (req, res) => {
+
     try {
         const hotel = await req.storage.getHotelById(req.params.id);
 
-        if(hotel.owner != req.user._id){
-            throw new Error ('Cannot edit hotel to who you are not owner!')
+        if (hotel.owner != req.user._id) {
+            throw new Error('Cannot edit hotel to who you are not owner!')
         }
-        res.render('hotel/edit', {hotel})
-        
+        res.render('hotel/edit', { hotel })
+
     } catch (err) {
-       console.log(err.message);
+        console.log(err.message);
         res.redirect('/');
-        
+
     }
 })
-router.post('/edit/:id', isUser(), async(req, res)=>{
+router.post('/edit/:id', isUser(), async (req, res) => {
     try {
 
 
         const hotel = await req.storage.getHotelById(req.params.id);
 
-        if(hotel.owner != req.user._id){
-            throw new Error ('Cannot edit hotel to who you are not owner!')
+        if (hotel.owner != req.user._id) {
+            throw new Error('Cannot edit hotel to who you are not owner!')
         }
 
         await req.storage.editHotel(req.params.id, req.body)
         res.redirect('/');
-         
+
     } catch (err) {
-        let errors; 
-        if(err.errors){
+        let errors;
+        if (err.errors) {
             errors = Object.values(err.errors).map(e => e.properties.message);
-        }else{
+        } else {
             errors = [err.message]
         }
-        
+
         const ctx = {
             errors,
-            hotelData: {
+            hotel: {
                 _id: req.params.id,//tuk da ne zabravq pri edit post da dobavq id to na hotela
                 name: req.body.name,
                 city: req.body.city,
@@ -108,8 +108,22 @@ router.post('/edit/:id', isUser(), async(req, res)=>{
         }
 
         res.render('hotel/edit', ctx)
-        
+
     }
 
 })
+
+router.get('/book/:id', isUser(), async (req, res) => {
+    try {
+
+        await req.storage.bookHotel(req.params.id, req.user._id);
+
+        res.redirect('/hotels/details/' + req.params.id);
+
+    } catch (err) {
+        console.log(err.message);
+        res.redirect('/');
+    }
+})
+
 module.exports = router;
